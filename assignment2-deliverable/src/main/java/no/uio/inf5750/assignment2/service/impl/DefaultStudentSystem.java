@@ -69,7 +69,7 @@ public class DefaultStudentSystem implements StudentSystem {
 		}
 
 		for (Student s : students) {
-			s.getCourses().remove(course)
+			s.getCourses().remove(course);
 		}
 	}
 
