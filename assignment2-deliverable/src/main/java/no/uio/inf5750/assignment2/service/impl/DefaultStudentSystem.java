@@ -115,15 +115,22 @@ public class DefaultStudentSystem implements StudentSystem {
 		return degreeDao.getAllDegrees();
 	}
 
-	@Override
 	public void delDegree(int degreeId) {
+		Collection<Student> students = studentDao.getAllStudents();
+		Collection<Degree> degrees = degreeDao.getAllDegrees();
 
+		for (Student s : students) {
+			s.getDegrees().remove(degreeId);
+		}
+
+		degrees.remove(degreeId);
 	}
 
-	@Override
+	
 	public void addRequiredCourseToDegree(int degreeId, int courseId) {
-		// TODO Auto-generated method stub
-
+	Collection<Course> requiredCourses = degreeDao.getDegree(degreeId).getRequiredCourses();
+	
+	requiredCourses.add(courseDao.getCourse(courseId));
 	}
 
 	@Override
