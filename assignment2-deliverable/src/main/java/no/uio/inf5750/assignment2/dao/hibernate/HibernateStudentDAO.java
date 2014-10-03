@@ -8,10 +8,12 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import no.uio.inf5750.assignment2.dao.StudentDAO;
 import no.uio.inf5750.assignment2.model.Student;
 
+@Component
 public class HibernateStudentDAO implements StudentDAO {
 
 	@Autowired
@@ -33,8 +35,8 @@ public class HibernateStudentDAO implements StudentDAO {
 
 	@Override
 	public Student getStudent(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return null; 
+		
 	}
 
 	@Override

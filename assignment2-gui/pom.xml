@@ -10,7 +10,7 @@
 
     <artifactId>assignment2-gui</artifactId>
     <packaging>war</packaging>
-    <name>Assignment 2 GUI</name>
+    <name>Assignment 2 GUI Maven Webapp</name>
 
     <dependencies>
 

@@ -4,10 +4,12 @@ import java.util.Collection;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import no.uio.inf5750.assignment2.dao.CourseDAO;
 import no.uio.inf5750.assignment2.model.Course;
 
+@Component
 public class HibernateCourseDAO implements CourseDAO {
 	
 	@Autowired
