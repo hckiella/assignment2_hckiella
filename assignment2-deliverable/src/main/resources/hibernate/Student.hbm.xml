@@ -2,11 +2,26 @@
 <!DOCTYPE hibernate-mapping PUBLIC
   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
 <hibernate-mapping>
-  <class name="no.uio.inf5750.assignment2.model.Student" table="student">
-    <id name="id" column="id">
-      <generator class="native"/>
-    </id>
-    <property name="content" not-null="true"/>
-  </class>
+
+
+	<class name="no.uio.inf5750.assignment2.model.Student" table="student">
+
+		<id name="id" type="int" column="studentId">
+		</id>
+
+		<property name="name" type="string" />
+
+		<set name="courses">
+			<key column="courseId" not-null="true" />
+			<many-to-many class="Course" />
+		</set>
+		
+		<set name="degrees">
+			<key column="degreeId" not-null="true" />
+			<one-to-many class="Degree" />
+		</set>
+
+	</class>
 </hibernate-mapping>
