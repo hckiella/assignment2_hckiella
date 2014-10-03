@@ -23,6 +23,7 @@ public class DefaultStudentSystem implements StudentSystem {
 	@Autowired
 	private StudentDAO studentDao;
 
+	@Override
 	public int addCourse(String courseCode, String name) {
 		Course course = getCourseByCourseCode(courseCode);
 
@@ -35,6 +36,7 @@ public class DefaultStudentSystem implements StudentSystem {
 		return course.getId();
 	}
 
+	@Override
 	public void updateCourse(int courseId, String courseCode, String name) {
 		Course toUpdate = courseDao.getCourse(courseId);
 
@@ -44,22 +46,27 @@ public class DefaultStudentSystem implements StudentSystem {
 		}
 	}
 
+	@Override
 	public Course getCourse(int courseId) {
 		return courseDao.getCourse(courseId);
 	}
 
+	@Override
 	public Course getCourseByCourseCode(String courseCode) {
 		return courseDao.getCourseByCourseCode(courseCode);
 	}
 
+	@Override
 	public Course getCourseByName(String name) {
 		return courseDao.getCourseByName(name);
 	}
 
+	@Override
 	public Collection<Course> getAllCourses() {
 		return courseDao.getAllCourses();
 	}
 
+	@Override
 	public void delCourse(int courseId) {
 		Course course = courseDao.getCourse(courseId);
 
@@ -78,6 +85,7 @@ public class DefaultStudentSystem implements StudentSystem {
 		}
 	}
 
+	@Override
 	public void addAttendantToCourse(int courseId, int studentId) {
 		Course course = courseDao.getCourse(courseId);
 
@@ -85,6 +93,7 @@ public class DefaultStudentSystem implements StudentSystem {
 			course.getAttendants().add(studentDao.getStudent(studentId));
 	}
 
+	@Override
 	public void removeAttendantFromCourse(int courseId, int studentId) {
 		Course course = courseDao.getCourse(courseId);
 		Student student = studentDao.getStudent(studentId);
@@ -95,6 +104,7 @@ public class DefaultStudentSystem implements StudentSystem {
 		}
 	}
 
+	@Override
 	public int addDegree(String type) {
 		/*
 		 * Degree degree = degreeDao.getDegreeByType(type);
@@ -106,6 +116,7 @@ public class DefaultStudentSystem implements StudentSystem {
 		return degreeDao.saveDegree(degree);
 	}
 
+	@Override
 	public void updateDegree(int degreeId, String type) {
 		Degree degree = degreeDao.getDegree(degreeId);
 
@@ -113,18 +124,22 @@ public class DefaultStudentSystem implements StudentSystem {
 			degree.setType(type);
 	}
 
+	@Override
 	public Degree getDegree(int degreeId) {
 		return degreeDao.getDegree(degreeId);
 	}
 
+	@Override
 	public Degree getDegreeByType(String type) {
 		return degreeDao.getDegreeByType(type);
 	}
 
+	@Override
 	public Collection<Degree> getAllDegrees() {
 		return degreeDao.getAllDegrees();
 	}
 
+	@Override
 	public void delDegree(int degreeId) {
 		Collection<Student> students = studentDao.getAllStudents();
 		Collection<Degree> degrees = degreeDao.getAllDegrees();
@@ -136,6 +151,7 @@ public class DefaultStudentSystem implements StudentSystem {
 		degrees.remove(degreeId);
 	}
 
+	@Override
 	public void addRequiredCourseToDegree(int degreeId, int courseId) {
 		Degree degree = degreeDao.getDegree(degreeId);
 		Course course = courseDao.getCourse(courseId);
@@ -147,6 +163,7 @@ public class DefaultStudentSystem implements StudentSystem {
 		}
 	}
 
+	@Override
 	public void removeRequiredCourseFromDegree(int degreeId, int courseId) {
 		Course course = courseDao.getCourse(courseId);
 		Degree degree = degreeDao.getDegree(degreeId);
@@ -158,11 +175,13 @@ public class DefaultStudentSystem implements StudentSystem {
 		}
 	}
 
+	@Override
 	public int addStudent(String name) {
 		Student student = new Student(name);
 		return studentDao.saveStudent(student);
 	}
 
+	@Override
 	public void updateStudent(int studentId, String name) {
 		Student student = studentDao.getStudent(studentId);
 
