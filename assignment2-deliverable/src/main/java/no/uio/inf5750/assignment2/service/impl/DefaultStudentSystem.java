@@ -25,24 +25,18 @@ public class DefaultStudentSystem implements StudentSystem {
 
 	@Override
 	public int addCourse(String courseCode, String name) {
-		Course course = getCourseByCourseCode(courseCode);
-
-		if (course == null) {
-			// add as a new course
-			course = new Course(courseCode, name);
-			course.setId(course.hashCode());
-		}
-
-		return course.getId();
+		Course course = new Course(courseCode, name);
+		
+		return courseDao.saveCourse(course);
 	}
 
 	@Override
 	public void updateCourse(int courseId, String courseCode, String name) {
-		Course toUpdate = courseDao.getCourse(courseId);
+		Course course = courseDao.getCourse(courseId);
 
-		if (toUpdate != null) {
-			toUpdate.setCourseCode(courseCode);
-			toUpdate.setName(name);
+		if (course != null) {
+			course.setCourseCode(courseCode);
+			course.setName(name);
 		}
 	}
 
@@ -75,13 +69,11 @@ public class DefaultStudentSystem implements StudentSystem {
 			Collection<Degree> degrees = degreeDao.getAllDegrees();
 			Collection<Student> students = studentDao.getAllStudents();
 
-			for (Degree d : degrees) {
+			for (Degree d : degrees)
 				d.getRequiredCourses().remove(course);
-			}
 
-			for (Student s : students) {
+			for (Student s : students)
 				s.getCourses().remove(course);
-			}
 		}
 	}
 
@@ -143,7 +135,7 @@ public class DefaultStudentSystem implements StudentSystem {
 	public void delDegree(int degreeId) {
 		Collection<Student> students = studentDao.getAllStudents();
 		Collection<Degree> degrees = degreeDao.getAllDegrees();
-		
+
 		for (Student s : students) {
 			s.getDegrees().remove(degreeId);
 		}
@@ -155,10 +147,10 @@ public class DefaultStudentSystem implements StudentSystem {
 	public void addRequiredCourseToDegree(int degreeId, int courseId) {
 		Degree degree = degreeDao.getDegree(degreeId);
 		Course course = courseDao.getCourse(courseId);
-		
-		if(degree != null && course != null) {
+
+		if (degree != null && course != null) {
 			Collection<Course> requiredCourses = degreeDao.getDegree(degreeId)
-				.getRequiredCourses();
+					.getRequiredCourses();
 			requiredCourses.add(courseDao.getCourse(courseId));
 		}
 	}
@@ -168,9 +160,9 @@ public class DefaultStudentSystem implements StudentSystem {
 		Course course = courseDao.getCourse(courseId);
 		Degree degree = degreeDao.getDegree(degreeId);
 
-		if(degree != null && course != null) {
+		if (degree != null && course != null) {
 			Collection<Course> requiredCourses = degreeDao.getDegree(degreeId)
-				.getRequiredCourses();
+					.getRequiredCourses();
 			requiredCourses.remove(courseDao.getCourse(courseId));
 		}
 	}
@@ -191,44 +183,67 @@ public class DefaultStudentSystem implements StudentSystem {
 
 	@Override
 	public Student getStudent(int studentId) {
-		// TODO Auto-generated method stub
-		return null;
+		return studentDao.getStudent(studentId);
 	}
 
 	@Override
 	public Student getStudentByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return studentDao.getStudentByName(name);
 	}
 
 	@Override
 	public Collection<Student> getAllStudents() {
-		// TODO Auto-generated method stub
-		return null;
+		return studentDao.getAllStudents();
 	}
 
 	@Override
 	public void delStudent(int studentId) {
-		// TODO Auto-generated method stub
+		Student student = studentDao.getStudent(studentId);
 
+		if (student != null) {
+			Collection<Course> courses = courseDao.getAllCourses();
+
+			for (Course c : courses)
+				c.getAttendants().remove(student);
+		}
 	}
 
 	@Override
 	public void addDegreeToStudent(int studentId, int degreeId) {
-		// TODO Auto-generated method stub
+		Student student = studentDao.getStudent(studentId);
+		Degree degree = degreeDao.getDegree(degreeId);
 
+		if (student != null && degree != null)
+			student.getDegrees().add(degree);
 	}
 
 	@Override
 	public void removeDegreeFromStudent(int studentId, int degreeId) {
-		// TODO Auto-generated method stub
+		Student student = studentDao.getStudent(studentId);
+		Degree degree = degreeDao.getDegree(degreeId);
+
+		if (student != null && degree != null)
+			student.getDegrees().remove(degree);
 
 	}
 
 	@Override
 	public boolean studentFulfillsDegreeRequirements(int studentId, int degreeId) {
-		// TODO Auto-generated method stub
-		return false;
+		Degree degree = degreeDao.getDegree(degreeId);
+		Student student = studentDao.getStudent(studentId);
+		
+		if(student != null && degree != null) {
+			Collection<Course> requiredCourses = degree.getRequiredCourses();
+			Collection<Course> studentCourses = student.getCourses();
+			
+			if(studentCourses.containsAll(requiredCourses))
+				return true;
+			
+			else
+				return false;
+		}
+		else
+			return false;
 	}
 
 }
