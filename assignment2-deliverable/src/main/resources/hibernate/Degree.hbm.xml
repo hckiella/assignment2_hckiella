@@ -13,9 +13,10 @@
 
 		<property name="type" type="string" />
 
-		<set name="requiredCourses">
-			<key column="courseId" not-null="true" />
-			<one-to-many class="Course" />
+		<set name="requiredCourses" table="degreeRequiredCourses">
+			<key column="degreeId" />
+			<many-to-many column="courseId"
+				class="no.uio.inf5750.assignment2.model.Course" unique="true" />
 		</set>
 
 	</class>

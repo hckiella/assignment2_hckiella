@@ -14,9 +14,11 @@
 		<property name="courseCode" type="string" not-null="true"
 			unique="true" />
 
-		<set name="attendants">
-			<key column="studentId" not-null="true" />
-			<many-to-many class="Student" />
+		<set name="attendants" table="courseAttendants">
+			<key column="courseId"/>
+			<many-to-many column="studentId" 
+				class="no.uio.inf5750.assignment2.model.Student"
+				unique="true" />
 		</set>
 
 	</class>
