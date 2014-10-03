@@ -36,10 +36,12 @@ public class DefaultStudentSystem implements StudentSystem {
 	}
 
 	public void updateCourse(int courseId, String courseCode, String name) {
-		Course toUpdate = getCourse(courseId);
+		Course toUpdate = courseDao.getCourse(courseId);
 
-		toUpdate.setCourseCode(courseCode);
-		toUpdate.setName(name);
+		if (toUpdate != null) {
+			toUpdate.setCourseCode(courseCode);
+			toUpdate.setName(name);
+		}
 	}
 
 	public Course getCourse(int courseId) {
@@ -61,46 +63,54 @@ public class DefaultStudentSystem implements StudentSystem {
 	public void delCourse(int courseId) {
 		Course course = courseDao.getCourse(courseId);
 
-		Collection<Degree> degrees = degreeDao.getAllDegrees();
-		Collection<Student> students = studentDao.getAllStudents();
+		if (course != null) {
 
-		for (Degree d : degrees) {
-			d.getRequiredCourses().remove(course);
-		}
+			Collection<Degree> degrees = degreeDao.getAllDegrees();
+			Collection<Student> students = studentDao.getAllStudents();
 
-		for (Student s : students) {
-			s.getCourses().remove(course);
+			for (Degree d : degrees) {
+				d.getRequiredCourses().remove(course);
+			}
+
+			for (Student s : students) {
+				s.getCourses().remove(course);
+			}
 		}
 	}
 
 	public void addAttendantToCourse(int courseId, int studentId) {
 		Course course = courseDao.getCourse(courseId);
-		course.getAttendants().add(studentDao.getStudent(studentId));
+
+		if (course != null)
+			course.getAttendants().add(studentDao.getStudent(studentId));
 	}
 
 	public void removeAttendantFromCourse(int courseId, int studentId) {
 		Course course = courseDao.getCourse(courseId);
 		Student student = studentDao.getStudent(studentId);
 
-		course.getAttendants().remove(student);
-		student.getCourses().remove(course);
+		if (course != null && student != null) {
+			course.getAttendants().remove(student);
+			student.getCourses().remove(course);
+		}
 	}
 
 	public int addDegree(String type) {
-		Degree degree = degreeDao.getDegreeByType(type);
-
-		if (degree == null) {
-			// add as a new course
-			degree = new Degree(type);
-			degree.setId(degree.hashCode());
-		}
-
-		return degree.getId();
+		/*
+		 * Degree degree = degreeDao.getDegreeByType(type);
+		 * 
+		 * if (degree == null) { // add as a new course degree = new
+		 * Degree(type); degree.setId(degree.hashCode()); }
+		 */
+		Degree degree = new Degree(type);
+		return degreeDao.saveDegree(degree);
 	}
 
 	public void updateDegree(int degreeId, String type) {
 		Degree degree = degreeDao.getDegree(degreeId);
-		degree.setType(type);
+
+		if (degree != null)
+			degree.setType(type);
 	}
 
 	public Degree getDegree(int degreeId) {
@@ -118,7 +128,7 @@ public class DefaultStudentSystem implements StudentSystem {
 	public void delDegree(int degreeId) {
 		Collection<Student> students = studentDao.getAllStudents();
 		Collection<Degree> degrees = degreeDao.getAllDegrees();
-
+		
 		for (Student s : students) {
 			s.getDegrees().remove(degreeId);
 		}
@@ -126,29 +136,38 @@ public class DefaultStudentSystem implements StudentSystem {
 		degrees.remove(degreeId);
 	}
 
-	
 	public void addRequiredCourseToDegree(int degreeId, int courseId) {
-	Collection<Course> requiredCourses = degreeDao.getDegree(degreeId).getRequiredCourses();
-	
-	requiredCourses.add(courseDao.getCourse(courseId));
+		Degree degree = degreeDao.getDegree(degreeId);
+		Course course = courseDao.getCourse(courseId);
+		
+		if(degree != null && course != null) {
+			Collection<Course> requiredCourses = degreeDao.getDegree(degreeId)
+				.getRequiredCourses();
+			requiredCourses.add(courseDao.getCourse(courseId));
+		}
 	}
 
-	@Override
 	public void removeRequiredCourseFromDegree(int degreeId, int courseId) {
-		// TODO Auto-generated method stub
+		Course course = courseDao.getCourse(courseId);
+		Degree degree = degreeDao.getDegree(degreeId);
 
+		if(degree != null && course != null) {
+			Collection<Course> requiredCourses = degreeDao.getDegree(degreeId)
+				.getRequiredCourses();
+			requiredCourses.remove(courseDao.getCourse(courseId));
+		}
 	}
 
-	@Override
 	public int addStudent(String name) {
-		// TODO Auto-generated method stub
-		return 0;
+		Student student = new Student(name);
+		return studentDao.saveStudent(student);
 	}
 
-	@Override
 	public void updateStudent(int studentId, String name) {
-		// TODO Auto-generated method stub
+		Student student = studentDao.getStudent(studentId);
 
+		if (student != null)
+			student.setName(name);
 	}
 
 	@Override
