@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import no.uio.inf5750.assignment2.dao.DegreeDAO;
 import no.uio.inf5750.assignment2.model.Degree;
 
-@Component
+
 public class HibernateDegreeDAO implements DegreeDAO {
 
 	@Autowired

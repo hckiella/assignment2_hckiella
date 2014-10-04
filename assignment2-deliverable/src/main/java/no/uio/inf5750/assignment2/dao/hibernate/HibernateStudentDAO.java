@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import no.uio.inf5750.assignment2.dao.StudentDAO;
 import no.uio.inf5750.assignment2.model.Student;
 
-@Component
+
 public class HibernateStudentDAO implements StudentDAO {
 
 	@Autowired
