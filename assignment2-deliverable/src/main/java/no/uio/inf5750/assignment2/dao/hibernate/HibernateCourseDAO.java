@@ -14,6 +14,10 @@ public class HibernateCourseDAO implements CourseDAO {
 	
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
 
 	@Override
 	public int saveCourse(Course course) {
