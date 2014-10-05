@@ -13,17 +13,17 @@
 
 		<property name="name" type="string" />
 
-		<set name="courses" table="studentCourses">
-			<key column="studentId" />
-			<many-to-many column="courseId"
-				class="no.uio.inf5750.assignment2.model.Course" />
+ <!-- 
+		<set name="courses">
+			<key column="student_id" />
+			<one-to-many class="no.uio.inf5750.assignment2.model.Course" />
 		</set>
 
-		<set name="degrees" table="studentDegrees">
-			<key column="studentId" />
-			<many-to-many column="degreeId"
-				class="no.uio.inf5750.assignment2.model.Degree" unique="true" />
+		<set name="degrees">
+			<key column="student_id" />
+			<one-to-many class="no.uio.inf5750.assignment2.model.Degree" />
 		</set>
+		 -->
 
 	</class>
 </hibernate-mapping>
