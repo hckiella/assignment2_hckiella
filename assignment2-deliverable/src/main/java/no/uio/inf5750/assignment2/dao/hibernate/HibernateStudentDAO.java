@@ -9,123 +9,123 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import no.uio.inf5750.assignment2.dao.StudentDAO;
 import no.uio.inf5750.assignment2.model.Student;
 
-
 public class HibernateStudentDAO implements StudentDAO {
-	
+
 	static Logger logger = Logger.getLogger(HibernateStudentDAO.class);
 
 	@Autowired
 	private SessionFactory sessionFactory;
-		
+
 	@Override
 	public int saveStudent(Student student) {
 		Student savedStudent = getStudentByName(student.getName());
-		
-		if(savedStudent == null) {
-			student.setId(student.hashCode());			
-			int i = (Integer) sessionFactory.getCurrentSession().save(student);
-			System.out.println("Saving " + student.getName() + " id: " + i + "(stdent.id: " + student.getId());
+
+		if (savedStudent == null) {
+			student.setId(student.hashCode());
+			Session session = sessionFactory.getCurrentSession();
+			Transaction tx = null;
+			try {
+				tx = session.beginTransaction();
+				session.save(student);
+				tx.commit();
+				session.flush();
+
+			} catch (HibernateException e) {
+				if (tx != null)
+					tx.rollback();
+				logger.error("DB query failed", e);
+
+			} finally {
+				//session.close();
+			}
+
 			return student.getId();
 		}
-		
+
 		else {
-			System.out.println("Returning saved value");
+			System.out.println("Returning cached student");
 			return savedStudent.getId();
 		}
-			
 	}
 
 	@Override
 	public Student getStudent(int id) {
-		return null; 
-		
+		return (Student) sessionFactory.getCurrentSession().get(Student.class, id);
 	}
 
 	@Override
 	public Student getStudentByName(String name) {
-		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		Transaction tx = null;
 		Student student = null;
+
+		try {
+			tx = session.beginTransaction();
+			student = (Student) session.createQuery(
+					"FROM Student WHERE name='" + name + "'").uniqueResult();
+			tx.commit();
+
+		} catch (HibernateException e) {
+
+			if (tx != null)
+				tx.rollback();
+			logger.error("DB query failed", e);
+
+		} finally {
+			//session.close();
+		}
 		return student;
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public Collection<Student> getAllStudents() {
-		Session session = sessionFactory.openSession();
-	    Transaction tx = null;
-	    List <Student> studentus = null;
-	    //Student students;
-	    try{
-	       tx = session.beginTransaction();
-	       @SuppressWarnings("unchecked")
-	       // This is an HQL query, not an SQL query (HQL is based on SQL, but is not 100% the same)
-	       List<Student> students = session.createQuery("FROM Student ORDER by studentId ASC").list();
-	       for(Student s: students)
-	    	   System.out.println("name " + s.getName());
-	       
-	       studentus = students;
-	       
-	      tx.commit();	       
-	       
-	    }catch (HibernateException e) {
-	    	
-	       if (tx!=null) tx.rollback();
-	       logger.error("DB query failed", e);
-	       
-	    }finally {
-	       session.close();
-	    }
-	    return studentus;
+		Session session = sessionFactory.getCurrentSession();
+		Transaction tx = null;
+		List<Student> students = null;
+
+		try {
+			tx = session.beginTransaction();
+			students = (List<Student>) session.createQuery(
+					"FROM Student ORDER by studentId ASC").list();
+			tx.commit();
+			session.flush();
+
+		} catch (HibernateException e) {
+
+			if (tx != null)
+				tx.rollback();
+			logger.error("DB query failed", e);
+
+		} finally {
+			//session.close();
+		}
+		return students;
 	}
 
 	@Override
 	public void delStudent(Student student) {
-		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		Transaction tx = null;
 
+		try {
+			tx = session.beginTransaction();
+			session.delete(student);
+			tx.commit();
+			session.flush();
+
+		} catch (HibernateException e) {
+
+			if (tx != null)
+				tx.rollback();
+			logger.error("DB query failed", e);
+
+		} finally {
+			//session.close();
+		}
 	}
-
 }
-
-/*
-public int save( Message message )
-{
-    return (Integer) sessionFactory.getCurrentSession().save( message );
-}
-
-
-public Message get( int id )
-{
-    return (Message) sessionFactory.getCurrentSession().get( Message.class, id );
-}
-
-public Message getLast()
-{
-    Session session = sessionFactory.openSession();
-    Transaction tx = null;
-    Message message = null;
-    
-    try{
-       tx = session.beginTransaction();
-       @SuppressWarnings("unchecked")
-       // This is an HQL query, not an SQL query (HQL is based on SQL, but is not 100% the same)
-       List<Message> messages = session.createQuery("FROM Message ORDER by id DESC").list();
-       
-       if (!messages.isEmpty()) {
-               message = messages.iterator().next();
-       }
-       tx.commit();
-       
-    }catch (HibernateException e) {
-    	
-       if (tx!=null) tx.rollback();
-       logger.error("DB query failed", e);
-       
-    }finally {
-       session.close();
-    }
-    return message;
-}
-}
-*/

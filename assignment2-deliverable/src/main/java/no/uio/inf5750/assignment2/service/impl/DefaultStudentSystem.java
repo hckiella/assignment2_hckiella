@@ -67,7 +67,8 @@ public class DefaultStudentSystem implements StudentSystem {
 		Course course = courseDao.getCourse(courseId);
 
 		if (course != null) {
-
+			courseDao.delCourse(course);
+			/*
 			Collection<Degree> degrees = degreeDao.getAllDegrees();
 			Collection<Student> students = studentDao.getAllStudents();
 
@@ -75,16 +76,19 @@ public class DefaultStudentSystem implements StudentSystem {
 				d.getRequiredCourses().remove(course);
 
 			for (Student s : students)
-				s.getCourses().remove(course);
+				s.getCourses().remove(course);*/
 		}
 	}
 
 	@Override
 	public void addAttendantToCourse(int courseId, int studentId) {
 		Course course = courseDao.getCourse(courseId);
+		Student student = studentDao.getStudent(studentId);
 
-		if (course != null)
-			course.getAttendants().add(studentDao.getStudent(studentId));
+		if (course != null && student != null) {
+			course.getAttendants().add(student);
+			student.getCourses().add(course);
+		}
 	}
 
 	@Override
@@ -100,12 +104,6 @@ public class DefaultStudentSystem implements StudentSystem {
 
 	@Override
 	public int addDegree(String type) {
-		/*
-		 * Degree degree = degreeDao.getDegreeByType(type);
-		 * 
-		 * if (degree == null) { // add as a new course degree = new
-		 * Degree(type); degree.setId(degree.hashCode()); }
-		 */
 		Degree degree = new Degree(type);
 		return degreeDao.saveDegree(degree);
 	}
@@ -135,14 +133,9 @@ public class DefaultStudentSystem implements StudentSystem {
 
 	@Override
 	public void delDegree(int degreeId) {
-		Collection<Student> students = studentDao.getAllStudents();
-		Collection<Degree> degrees = degreeDao.getAllDegrees();
-
-		for (Student s : students) {
-			s.getDegrees().remove(degreeId);
-		}
-
-		degrees.remove(degreeId);
+		Degree degree = degreeDao.getDegree(degreeId);
+		if(degree != null)
+			degreeDao.delDegree(degree);
 	}
 
 	@Override
@@ -202,12 +195,14 @@ public class DefaultStudentSystem implements StudentSystem {
 	public void delStudent(int studentId) {
 		Student student = studentDao.getStudent(studentId);
 
-		if (student != null) {
+		/*if (student != null) {
 			Collection<Course> courses = courseDao.getAllCourses();
 
 			for (Course c : courses)
 				c.getAttendants().remove(student);
-		}
+		}*/
+		studentDao.delStudent(student);
+		
 	}
 
 	@Override
