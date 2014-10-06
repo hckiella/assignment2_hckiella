@@ -28,7 +28,6 @@ public class DefaultStudentSystem implements StudentSystem {
 	@Override
 	public int addCourse(String courseCode, String name) {
 		Course course = new Course(courseCode, name);
-		
 		return courseDao.saveCourse(course);
 	}
 
@@ -69,14 +68,13 @@ public class DefaultStudentSystem implements StudentSystem {
 		if (course != null) {
 			courseDao.delCourse(course);
 			/*
-			Collection<Degree> degrees = degreeDao.getAllDegrees();
-			Collection<Student> students = studentDao.getAllStudents();
-
-			for (Degree d : degrees)
-				d.getRequiredCourses().remove(course);
-
-			for (Student s : students)
-				s.getCourses().remove(course);*/
+			 * Collection<Degree> degrees = degreeDao.getAllDegrees();
+			 * Collection<Student> students = studentDao.getAllStudents();
+			 * 
+			 * for (Degree d : degrees) d.getRequiredCourses().remove(course);
+			 * 
+			 * for (Student s : students) s.getCourses().remove(course);
+			 */
 		}
 	}
 
@@ -87,7 +85,6 @@ public class DefaultStudentSystem implements StudentSystem {
 
 		if (course != null && student != null) {
 			course.getAttendants().add(student);
-			student.getCourses().add(course);
 		}
 	}
 
@@ -98,7 +95,6 @@ public class DefaultStudentSystem implements StudentSystem {
 
 		if (course != null && student != null) {
 			course.getAttendants().remove(student);
-			student.getCourses().remove(course);
 		}
 	}
 
@@ -134,7 +130,7 @@ public class DefaultStudentSystem implements StudentSystem {
 	@Override
 	public void delDegree(int degreeId) {
 		Degree degree = degreeDao.getDegree(degreeId);
-		if(degree != null)
+		if (degree != null)
 			degreeDao.delDegree(degree);
 	}
 
@@ -144,9 +140,7 @@ public class DefaultStudentSystem implements StudentSystem {
 		Course course = courseDao.getCourse(courseId);
 
 		if (degree != null && course != null) {
-			Collection<Course> requiredCourses = degreeDao.getDegree(degreeId)
-					.getRequiredCourses();
-			requiredCourses.add(courseDao.getCourse(courseId));
+			degree.getRequiredCourses().add(course);
 		}
 	}
 
@@ -156,9 +150,7 @@ public class DefaultStudentSystem implements StudentSystem {
 		Degree degree = degreeDao.getDegree(degreeId);
 
 		if (degree != null && course != null) {
-			Collection<Course> requiredCourses = degreeDao.getDegree(degreeId)
-					.getRequiredCourses();
-			requiredCourses.remove(courseDao.getCourse(courseId));
+			boolean removed = degree.getRequiredCourses().remove(course);
 		}
 	}
 
@@ -195,14 +187,14 @@ public class DefaultStudentSystem implements StudentSystem {
 	public void delStudent(int studentId) {
 		Student student = studentDao.getStudent(studentId);
 
-		/*if (student != null) {
-			Collection<Course> courses = courseDao.getAllCourses();
-
-			for (Course c : courses)
-				c.getAttendants().remove(student);
-		}*/
+		/*
+		 * if (student != null) { Collection<Course> courses =
+		 * courseDao.getAllCourses();
+		 * 
+		 * for (Course c : courses) c.getAttendants().remove(student); }
+		 */
 		studentDao.delStudent(student);
-		
+
 	}
 
 	@Override
@@ -228,18 +220,17 @@ public class DefaultStudentSystem implements StudentSystem {
 	public boolean studentFulfillsDegreeRequirements(int studentId, int degreeId) {
 		Degree degree = degreeDao.getDegree(degreeId);
 		Student student = studentDao.getStudent(studentId);
-		
-		if(student != null && degree != null) {
+
+		if (student != null && degree != null) {
 			Collection<Course> requiredCourses = degree.getRequiredCourses();
 			Collection<Course> studentCourses = student.getCourses();
-			
-			if(studentCourses.containsAll(requiredCourses))
+
+			if (student.getCourses().containsAll(degree.getRequiredCourses()))
 				return true;
-			
+
 			else
 				return false;
-		}
-		else
+		} else
 			return false;
 	}
 

@@ -73,6 +73,7 @@ public class HibernateCourseDAO implements CourseDAO {
 			course = (Course) session.createQuery(
 					"FROM Course WHERE courseCode='" + courseCode + "'").uniqueResult();
 			tx.commit();
+			session.flush();
 
 		} catch (HibernateException e) {
 
@@ -97,6 +98,7 @@ public class HibernateCourseDAO implements CourseDAO {
 			course = (Course) session.createQuery(
 					"FROM Course WHERE name='" + name + "'").uniqueResult();
 			tx.commit();
+			session.flush();
 
 		} catch (HibernateException e) {
 
@@ -149,7 +151,6 @@ public class HibernateCourseDAO implements CourseDAO {
 			session.flush();
 
 		} catch (HibernateException e) {
-
 			if (tx != null)
 				tx.rollback();
 			logger.error("DB query failed", e);

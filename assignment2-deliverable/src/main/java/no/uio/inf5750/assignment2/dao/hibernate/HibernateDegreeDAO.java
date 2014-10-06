@@ -118,10 +118,6 @@ public class HibernateDegreeDAO implements DegreeDAO {
 		try {
 			tx = session.beginTransaction();
 			session.delete(degree);
-			/*
-			 * session.createQuery( "FROM Degree WHERE degreeName='" + degree.getName() +
-			 * "'").uniqueResult();
-			 */
 			tx.commit();
 			session.flush();
 
