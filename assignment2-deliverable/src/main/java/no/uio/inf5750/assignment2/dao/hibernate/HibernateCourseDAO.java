@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import no.uio.inf5750.assignment2.dao.CourseDAO;
 import no.uio.inf5750.assignment2.model.Course;
@@ -115,8 +116,12 @@ public class HibernateCourseDAO implements CourseDAO {
 	
 	@Override
 	@SuppressWarnings("unchecked")
+	@Transactional
 	public Collection<Course> getAllCourses() {
 		Session session = sessionFactory.getCurrentSession();
+		List<Course> courses = (List<Course>) session.createQuery(
+				"FROM Course ORDER by courseId ASC").list();
+		/*
 		Transaction tx = null;
 		List<Course> courses = null;
 
@@ -135,7 +140,7 @@ public class HibernateCourseDAO implements CourseDAO {
 
 		} finally {
 			//session.close();
-		}
+		}*/
 		return courses;
 	}
 

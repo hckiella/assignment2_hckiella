@@ -194,12 +194,13 @@ public class DefaultStudentSystem implements StudentSystem {
 	public void delStudent(int studentId) {
 		Student student = studentDao.getStudent(studentId);
 
-		/*
-		 * if (student != null) { Collection<Course> courses =
-		 * courseDao.getAllCourses();
-		 * 
-		 * for (Course c : courses) c.getAttendants().remove(student); }
-		 */
+		if (student != null) {
+			Collection<Course> courses = courseDao.getAllCourses();
+
+			for (Course c : courses)
+				c.getAttendants().remove(student);
+		}
+
 		studentDao.delStudent(student);
 
 	}
