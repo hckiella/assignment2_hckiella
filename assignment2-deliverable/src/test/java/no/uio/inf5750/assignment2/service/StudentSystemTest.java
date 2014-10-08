@@ -1,7 +1,7 @@
 package no.uio.inf5750.assignment2.service;
 
+import static org.junit.Assert.*;
 import no.uio.inf5750.assignment2.model.Course;
-import no.uio.inf5750.assignment2.service.StudentSystem;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,58 +11,74 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:resources/META-INF/beans.xml" })
+@ContextConfiguration(locations = { "classpath*:META-INF/assignment2/beans.xml" })
 @Transactional
 public class StudentSystemTest {
-	
+
 	@Autowired
 	private StudentSystem studentSystem;
-	
 
 	@Test
 	public void testAddCourse() {
 		Course course = new Course("INF1010", "Objektorientert programmering");
 		course.setId(course.hashCode());
 		studentSystem.addCourse("INF1010", "Objektorientert programmering");
-		
-		assert(studentSystem.getAllCourses().contains(course));		
+
+		assertTrue(studentSystem.getAllCourses().contains(course));
+
 	}
 
 	@Test
 	public void testUpdateCourse() {
 		Course course = new Course("INF1010", "Objektorientert programmering");
 		course.setId(course.hashCode());
-		
+
 		studentSystem.addCourse("INF1010", "Objektorientert programmering");
-		assert(studentSystem.getAllCourses().contains(course));
-		
-		studentSystem.updateCourse(course.getId(), "Objektorientert programmering 2", "INF1020");
-		assert(!studentSystem.getAllCourses().contains(course));
-		
+		assertTrue(studentSystem.getAllCourses().contains(course));
+
+		studentSystem.updateCourse(course.getId(), "INF1020",
+				"Objektorientert programmering 2");
+		assertFalse(studentSystem.getAllCourses().contains(course));
+
 		course.setCourseCode("INF1020");
-		course.setName( "Objektorientert programmering 2");
-		assert(studentSystem.getAllCourses().contains(course));
+		course.setName("Objektorientert programmering 2");
+
+		assertTrue(studentSystem.getAllCourses().contains(course));
 	}
 
 	@Test
 	public void testGetCourse() {
 		Course course = new Course("INF1010", "Objektorientert programmering");
 		course.setId(course.hashCode());
+
 		studentSystem.addCourse("INF1010", "Objektorientert programmering");
-		
-		assert(course.equals(studentSystem.getCourse(course.getId())));
-		
-		assert(studentSystem.getCourse(0) == null);
+
+		assertTrue(course.equals(studentSystem.getCourse(course.getId())));
+		assertNull(studentSystem.getCourse(0));
 	}
 
 	@Test
 	public void testGetCourseByCourseCode() {
+		Course course = new Course("INF1010", "Objektorientert programmering");
+		course.setId(course.hashCode());
 
+		studentSystem.addCourse("INF1010", "Objektorientert programmering");
+
+		assertTrue(course.equals(studentSystem.getCourseByCourseCode(course
+				.getCourseCode())));
+		assertNull(studentSystem.getCourseByCourseCode("INF1000"));
 	}
 
 	@Test
 	public void testGetCourseByName() {
+		Course course = new Course("INF1010", "Objektorientert programmering");
+		course.setId(course.hashCode());
 
+		studentSystem.addCourse("INF1010", "Objektorientert programmering");
+
+		assertTrue(course
+				.equals(studentSystem.getCourseByName(course.getName())));
+		assertNull(studentSystem.getCourseByName("Funksjonell programmering"));
 	}
 
 	@Test
@@ -110,7 +126,7 @@ public class StudentSystemTest {
 	}
 
 	@Test
-	public void testdelDegree(int degreeId) {
+	public void testdelDegree() {
 
 	}
 

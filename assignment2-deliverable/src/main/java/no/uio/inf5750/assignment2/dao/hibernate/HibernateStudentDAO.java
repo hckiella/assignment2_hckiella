@@ -6,13 +6,12 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import no.uio.inf5750.assignment2.dao.StudentDAO;
 import no.uio.inf5750.assignment2.model.Student;
 
-@Component
+
 public class HibernateStudentDAO implements StudentDAO {
 
 	@Autowired

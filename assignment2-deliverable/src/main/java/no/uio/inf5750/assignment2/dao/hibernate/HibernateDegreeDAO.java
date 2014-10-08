@@ -6,13 +6,12 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import no.uio.inf5750.assignment2.dao.DegreeDAO;
 import no.uio.inf5750.assignment2.model.Degree;
 
-@Component
+
 public class HibernateDegreeDAO implements DegreeDAO {
 
 	@Autowired

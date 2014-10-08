@@ -3,7 +3,6 @@ package no.uio.inf5750.assignment2.service.impl;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import no.uio.inf5750.assignment2.dao.CourseDAO;
 import no.uio.inf5750.assignment2.dao.DegreeDAO;
@@ -13,7 +12,6 @@ import no.uio.inf5750.assignment2.model.Degree;
 import no.uio.inf5750.assignment2.model.Student;
 import no.uio.inf5750.assignment2.service.StudentSystem;
 
-@Component
 public class DefaultStudentSystem implements StudentSystem {
 
 	@Autowired
@@ -28,6 +26,7 @@ public class DefaultStudentSystem implements StudentSystem {
 	@Override
 	public int addCourse(String courseCode, String name) {
 		Course course = new Course(courseCode, name);
+		
 		return courseDao.saveCourse(course);
 	}
 
@@ -164,6 +163,7 @@ public class DefaultStudentSystem implements StudentSystem {
 	@Override
 	public int addStudent(String name) {
 		Student student = new Student(name);
+		
 		return studentDao.saveStudent(student);
 	}
 
