@@ -1,5 +1,5 @@
-package no.uio.inf5750.assignment2.test;
-import no.uio.inf5750.assignment2.dao.CourseDAO;
+package no.uio.inf5750.assignment2.dao;
+import no.uio.inf5750.assignment2.dao.DegreeDAO;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,40 +9,35 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:resources/META-INF/beans.xml" })
+@ContextConfiguration(locations = { "classpath*:META-INF/beans.xml" })
 @Transactional
-public class CourseDaoTest {
+public class DegreeDaoTest {
 
 	@Autowired
-	private CourseDAO courseDao;
+	private DegreeDAO degreeDao;
 
 	@Test
-	public void testSaveCourse() {
+	public void testSaveDegree() {
 
 	}
 	
 	@Test
-	public void testGetCourse() {
+	public void testGetDegree() {
 
 	}
 
 	@Test
-	public void testGetCourseByCourseCode() {
+	public void testGetDegreeByType() {
 
 	}
 
 	@Test
-	public void testGetCourseByName() {
+	public void testGetAllDegrees() {
 
 	}
 
 	@Test
-	public void testgetAllCourses() {
-
-	}
-	
-	@Test
-	public void testDelCourse() {
+	public void testDelDegree() {
 
 	}
 

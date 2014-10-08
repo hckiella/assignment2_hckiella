@@ -1,4 +1,4 @@
-package no.uio.inf5750.assignment2.test;
+package no.uio.inf5750.assignment2.dao;
 import no.uio.inf5750.assignment2.dao.StudentDAO;
 
 import org.junit.Test;
@@ -9,12 +9,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:resources/META-INF/beans.xml" })
+@ContextConfiguration(locations = { "classpath*:/META-INF/beans.xml" })
 @Transactional
 public class StudentDaoTest {
 
 	@Autowired
-	private StudentDAO courseDao;
+	private StudentDAO studentDao;
 
 	@Test
 	public void testSaveStudent() {

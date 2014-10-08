@@ -59,6 +59,7 @@
 		<property name="password" value="130984" />
 	</bean>
 
+<!-- 
 	<bean id="courseDAO"
 		class="no.uio.inf5750.assignment2.dao.hibernate.HibernateCourseDAO">
 		<property name="sessionFactory">
@@ -73,8 +74,10 @@
 	<bean id="studentDAO"
 		class="no.uio.inf5750.assignment2.dao.hibernate.HibernateStudentDAO" />
 
-
+ -->
+ <!--
 	<bean id="studentSystem"
 		class="no.uio.inf5750.assignment2.service.impl.DefaultStudentSystem">
 	</bean>
+	-->
 </beans>         
