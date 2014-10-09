@@ -13,7 +13,7 @@
 
 		<property name="name" type="string" not-null="true" unique="true" />
 
-		<set name="courses" table="course_attendants">
+		<set name="courses" table="course_attendants" inverse="true">
 			<key column="studentId" />
 			<many-to-many column="courseId"
 				class="no.uio.inf5750.assignment2.model.Course" />

@@ -85,6 +85,7 @@ public class DefaultStudentSystem implements StudentSystem {
 
 		if (course != null && student != null) {
 			course.getAttendants().add(student);
+			student.getCourses().add(course);
 		}
 	}
 
@@ -95,6 +96,7 @@ public class DefaultStudentSystem implements StudentSystem {
 
 		if (course != null && student != null) {
 			course.getAttendants().remove(student);
+			student.getCourses().remove(course);
 		}
 	}
 
